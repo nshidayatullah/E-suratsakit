@@ -149,7 +149,7 @@
                         <td style="width:50%; text-align:center; font-size:14px;">
                             <p style="margin:0 0 5px 0;">Girimulya, {{ $surat->tanggal_surat->translatedFormat('d F Y') }}</p>
                             <div class="qr-kecil">
-                                <div id="qrcode" style="display:inline-block;"></div>
+                                {!! QrCode::size(80)->generate(route('surat.verify', $surat->short_code)) !!}
                             </div>
                             <p style="margin:5px 0 0 0;"><b>( {{ $surat->petugas }} )</b></p>
                         </td>
@@ -161,16 +161,5 @@
             <p>Surat ini ditandatangani secara digital oleh petugas yang berwenang dan oleh karena itu tidak memerlukan tanda tangan basah.</p>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
-        new QRCode(document.getElementById("qrcode"), {
-            text: "{{ route('surat.verify', $surat->short_code) }}",
-            width: 80,
-            height: 80,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.L
-        });
-    </script>
 </body>
 </html>
