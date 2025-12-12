@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login('/admin')
             ->font('poppins')
             ->sidebarWidth('16rem')
             ->collapsibleNavigationGroups(true)

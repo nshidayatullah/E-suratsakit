@@ -149,7 +149,7 @@
                         <td style="width:50%; text-align:center; font-size:14px;">
                             <p style="margin:0 0 5px 0;">Girimulya, {{ $surat->tanggal_surat->translatedFormat('d F Y') }}</p>
                             <div class="qr-kecil">
-                                {!! QrCode::size(80)->generate(route('surat.verify', $surat->short_code)) !!}
+                                {!! QrCode::size(80)->generate(route('surat.download', $surat->short_code)) !!}
                             </div>
                             <p style="margin:5px 0 0 0;"><b>( {{ $surat->petugas }} )</b></p>
                         </td>
