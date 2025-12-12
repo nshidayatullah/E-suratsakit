@@ -144,7 +144,7 @@
                         <td style="width:50%; text-align:center; font-size:14px;">
                             <p style="margin:0 0 5px 0;">Girimulya, {{ $surat->tanggal_surat->translatedFormat('d F Y') }}</p>
                             <div class="qr-kecil">
-                                <img src="data:image/png;base64,{!! base64_encode(QrCode::format('png')->size(200)->generate(route('surat.verify', $surat->short_code))) !!}" alt="QR" style="width:80px; height:80px;">
+                                <img src="data:image/png;base64,{!! base64_encode(QrCode::format('png')->size(200)->generate(route('surat.download', $surat->short_code))) !!}" alt="QR" style="width:80px; height:80px;">
                             </div>
                             <p style="margin:5px 0 0 0;"><b>( {{ $surat->petugas }} )</b></p>
                         </td>
