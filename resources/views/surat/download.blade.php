@@ -144,7 +144,7 @@
                 <table class="ttd-table">
                     <tr>
                         <td style="width:50%; font-size:8px; text-align:left; vertical-align:bottom;">
-                            PPA-HO-MAN-SHE-006
+                            PPA-BIB-F-SHE-21C
                         </td>
                         <td style="width:50%; text-align:center; font-size:14px;">
                             <p style="margin:0 0 5px 0;">Girimulya, {{ $surat->tanggal_surat->translatedFormat('d F Y') }}</p>
