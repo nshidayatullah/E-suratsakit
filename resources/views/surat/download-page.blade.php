@@ -155,9 +155,9 @@
                 <p class="text-xs text-center text-gray-300">
                     © {{ date('Y') }} PT. Putra Perkasa Abadi - Sistem Manajemen Surat Sakit
                 </p>
-                <p class="text-xs text-center text-gray-500 mt-1">
+                {{-- <p class="text-xs text-center text-gray-500 mt-1">
                     developed by @medik Hidayatullah
-                </p>
+                </p> --}}
             </div>
         </div>
     </div>
@@ -286,7 +286,7 @@
                 © {{ date('Y') }} PT. Putra Perkasa Abadi
             </p>
             <p class="text-xs text-center text-gray-500 mt-1">
-                Code by Ns. Hidayatullah
+                developed by @medik_Hidayatullah
             </p>
         </div>
     </div>
