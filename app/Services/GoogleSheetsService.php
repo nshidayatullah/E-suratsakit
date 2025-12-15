@@ -83,9 +83,15 @@ class GoogleSheetsService
         if (empty($date)) return null;
 
         try {
-            return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+            // Coba format MM/DD/YYYY (format Google Sheets US)
+            return Carbon::createFromFormat('m/d/Y', $date)->format('Y-m-d');
         } catch (\Exception $e) {
-            return null;
+            try {
+                // Fallback ke DD/MM/YYYY
+                return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+            } catch (\Exception $e) {
+                return null;
+            }
         }
     }
 }
