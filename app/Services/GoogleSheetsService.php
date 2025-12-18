@@ -39,6 +39,7 @@ class GoogleSheetsService
 
         $synced = 0;
         $skipped = 0;
+        $batasHari = Carbon::now()->subDays(3)->startOfDay();
 
         DB::beginTransaction();
         try {
@@ -50,10 +51,21 @@ class GoogleSheetsService
                     continue;
                 }
 
+                $tanggalSurat = $this->parseDate($row[8] ?? null);
+
+                // Skip jika tanggal lebih dari 3 hari yang lalu
+                if ($tanggalSurat) {
+                    $tanggalCarbon = Carbon::parse($tanggalSurat);
+                    if ($tanggalCarbon->lt($batasHari)) {
+                        $skipped++;
+                        continue;
+                    }
+                }
+
                 SuratSakit::updateOrCreate(
                     [
                         'nrp' => $nrp,
-                        'tanggal_surat' => $this->parseDate($row[8] ?? null),
+                        'tanggal_surat' => $tanggalSurat,
                         'jam_keluar_surat' => $row[7] ?? null,
                     ],
                     [
@@ -71,7 +83,7 @@ class GoogleSheetsService
             }
             DB::commit();
 
-            return ['success' => true, 'message' => "Sync berhasil: {$synced} data, {$skipped} dilewati"];
+            return ['success' => true, 'message' => "Sync berhasil: {$synced} data (3 hari terakhir), {$skipped} dilewati"];
         } catch (\Exception $e) {
             DB::rollBack();
             return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
