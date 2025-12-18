@@ -28,7 +28,7 @@ class SuratSakitTercetakResource extends Resource
 
     protected static ?string $pluralLabel = 'Surat Terbit';
 
-    protected static ?string $recordTitleAttribute = 'Surat Sakit Tercetak';
+    protected static ?string $recordTitleAttribute = 'nama';
 
     public static function form(Schema $schema): Schema
     {
