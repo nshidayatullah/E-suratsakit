@@ -15,3 +15,5 @@ Route::get('/download', [SuratController::class, 'downloadPage'])->name('surat.d
 Route::post('/download', [SuratController::class, 'downloadSubmit'])->name('surat.download.submit');
 
 Route::get('/surat/{shortCode}/pdf', [SuratController::class, 'downloadPdf'])->name('surat.pdf');
+
+
