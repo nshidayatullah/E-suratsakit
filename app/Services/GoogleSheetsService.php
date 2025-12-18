@@ -53,7 +53,7 @@ class GoogleSheetsService
 
                 $tanggalSurat = $this->parseDate($row[8] ?? null);
 
-                // Skip jika tanggal lebih dari 3 hari yang lalu
+                // Skip jika tanggal lebih dari 3 hari yang lalu (last 3 days)
                 if ($tanggalSurat) {
                     $tanggalCarbon = Carbon::parse($tanggalSurat);
                     if ($tanggalCarbon->lt($batasHari)) {
