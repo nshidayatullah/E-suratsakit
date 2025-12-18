@@ -80,7 +80,7 @@
         <div class="icon success">✓</div>
         <h1>Surat Sakit Valid</h1>
         <p>Surat keterangan sakit ini terdaftar dan sah.</p>
-        
+
         <div class="info">
             <table>
                 <tr>
@@ -105,14 +105,14 @@
                 </tr>
             </table>
         </div>
-        
+
         <a href="{{ route('surat.cetak', $surat->short_code) }}" class="btn">Lihat Surat</a>
     </div>
     @else
     <div class="card invalid">
         <div class="icon error">✗</div>
         <h1>Surat Tidak Valid</h1>
-        <p>Kode surat tidak ditemukan dalam sistem.</p>
+        <p>Kode surat tidak ditemukan dalam sistem PPA.</p>
     </div>
     @endif
 </body>
