@@ -17,6 +17,13 @@ class ListSuratSakitTercetaks extends ListRecords
         return [];
     }
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Resources\SuratSakitTercetaks\Widgets\SuratSakitTercetakStats::class,
+        ];
+    }
+
     public function getTabs(): array
     {
         $departments = CetakSuratSakit::select('departemen')

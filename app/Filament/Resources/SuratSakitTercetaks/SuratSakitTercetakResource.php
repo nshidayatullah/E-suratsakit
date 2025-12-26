@@ -69,4 +69,12 @@ class SuratSakitTercetakResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+
+    public static function getWidgets(): array
+    {
+        return [
+            \App\Filament\Resources\SuratSakitTercetaks\Widgets\SuratSakitTercetakStats::class,
+        ];
+    }
+
 }
