@@ -3,23 +3,23 @@
 namespace App\Filament\Resources\SuratSakits;
 
 use App\Models\SuratSakit;
-use App\Models\CetakSuratSakit;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Actions\ViewAction;
 use Filament\Actions\Action;
-use Filament\Tables\Filters\SelectFilter;
+use Filament\Schemas\Schema;
+use App\Models\CetakSuratSakit;
+use Filament\Actions\ViewAction;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Forms\Components\TimePicker;
+use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\SuratSakits\Pages;
 use App\Filament\Resources\SuratSakits\Schemas\SuratSakitForm;
 
 class SuratSakitResource extends Resource
 {
     protected static ?string $model = SuratSakit::class;
-
-
     protected static ?string $pluralLabel = 'Surat Sakit';
 
     public static function getNavigationIcon(): string
@@ -62,11 +62,17 @@ class SuratSakitResource extends Resource
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->visible(fn(SuratSakit $record) => !$record->is_published)
-                    ->requiresConfirmation()
                     ->modalHeading('Terbitkan Surat Sakit')
                     ->modalDescription(fn(SuratSakit $record) => "Terbitkan surat sakit untuk {$record->nama}?")
                     ->modalSubmitActionLabel('Ya, Terbitkan')
-                    ->action(function (SuratSakit $record) {
+                    ->form([
+                TimePicker::make('jam_keluar_surat')
+                            ->label('Jam Keluar Surat')
+                            ->required()
+                            ->placeholder('HH:MM')
+                            ->default(fn(SuratSakit $record) => $record->jam_keluar_surat ?? now()->format('H:i')),
+                    ])
+                    ->action(function (SuratSakit $record, array $data) {
                         $cetak = CetakSuratSakit::create([
                             'surat_sakit_id' => $record->id,
                             'short_code' => CetakSuratSakit::generateShortCode(),
@@ -76,7 +82,7 @@ class SuratSakitResource extends Resource
                             'departemen' => $record->departemen,
                             'keluhan' => $record->keluhan,
                             'tanggal_surat' => $record->tanggal_surat,
-                            'jam_keluar_surat' => $record->jam_keluar_surat,
+                            'jam_keluar_surat' => $data['jam_keluar_surat'],
                             'petugas' => $record->petugas,
                         ]);
 

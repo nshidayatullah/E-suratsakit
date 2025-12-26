@@ -3,11 +3,14 @@
 namespace App\Filament\Resources\SuratSakitTercetaks\Tables;
 
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Actions\ViewAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
 
 class SuratSakitTercetaksTable
 {
@@ -15,12 +18,9 @@ class SuratSakitTercetaksTable
     {
         return $table
             ->columns([
-                TextColumn::make('short_code')
-                    ->label('Kode')
-                    ->badge()
-                    ->color('success')
-                    ->copyable()
-                    ->searchable(),
+                TextColumn::make('row_number')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('nama')
                     ->label('Nama')
                     ->searchable(),
@@ -41,26 +41,67 @@ class SuratSakitTercetaksTable
                     ->label('Dicetak')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
+                TextColumn::make('short_code')
+                    ->label('Kode')
+                    ->size('lg')
+                    ->color('success')
+                    ->copyable()
+                    ->searchable(),
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                SelectFilter::make('departemen')->searchable()->preload(),
-                SelectFilter::make('petugas')->searchable()->preload(),
+                SelectFilter::make('departemen')
+                    ->options(fn() => \App\Models\CetakSuratSakit::query()
+                        ->distinct()
+                        ->whereNotNull('departemen')
+                        ->pluck('departemen', 'departemen')
+                        ->toArray())
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('petugas')
+                    ->options(fn() => \App\Models\CetakSuratSakit::query()
+                        ->distinct()
+                        ->whereNotNull('petugas')
+                        ->pluck('petugas', 'petugas')
+                        ->toArray())
+                    ->searchable()
+                    ->preload(),
+                Filter::make('tanggal_surat')
+                    ->form([
+                        DatePicker::make('dari')
+                            ->label('Dari Tanggal'),
+                        DatePicker::make('sampai')
+                            ->label('Sampai Tanggal'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['dari'], fn($q) => $q->whereDate('tanggal_surat', '>=', $data['dari']))
+                            ->when($data['sampai'], fn($q) => $q->whereDate('tanggal_surat', '<=', $data['sampai']));
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['dari'] ?? null) {
+                            $indicators['dari'] = 'Dari: ' . \Carbon\Carbon::parse($data['dari'])->format('d/m/Y');
+                        }
+                        if ($data['sampai'] ?? null) {
+                            $indicators['sampai'] = 'Sampai: ' . \Carbon\Carbon::parse($data['sampai'])->format('d/m/Y');
+                        }
+                        return $indicators;
+                    }),
             ])
             ->actions([
-            Action::make('preview')
-                ->label('Preview')
-                ->icon('heroicon-o-eye')
-                ->color('info')
-                ->url(fn($record) => route('surat.cetak', $record->short_code))
-                ->openUrlInNewTab(),
-                // Action::make('download')
-                //     ->label('Download')
-                //     ->icon('heroicon-o-arrow-down-tray')
-                //     ->color('success')
-                //     ->url(fn($record) => route('surat.download', $record->short_code))
-                //     ->openUrlInNewTab(),
-                DeleteAction::make(),
+                ActionGroup::make([
+                    Action::make('preview')
+                        ->label('Download PDF')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('success')
+                        ->url(fn($record) => route('surat.download', $record->short_code))
+                        ->openUrlInNewTab(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ])
+                    ->icon('heroicon-o-ellipsis-vertical')
+                    ->tooltip('Aksi'),
             ]);
     }
 }
