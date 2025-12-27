@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->spa()
             ->homeUrl(fn() => route('filament.admin.pages.dashboard'))
             ->font('poppins')
             ->sidebarWidth('16rem')
