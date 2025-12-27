@@ -28,6 +28,9 @@ class AdminPanelProvider extends PanelProvider
             // ->spa()
             ->id('admin')
             ->path('admin')
+            ->brandLogo(asset('images/logo-klinik.png'))
+            ->brandLogoHeight('60px')
+            ->brandName('Klinik PPA')
             ->login()
             ->spa()
             ->homeUrl(fn() => route('filament.admin.pages.dashboard'))
@@ -36,7 +39,7 @@ class AdminPanelProvider extends PanelProvider
             ->collapsibleNavigationGroups(true)
             ->sidebarCollapsibleOnDesktop(true)
             ->colors([
-                'primary' => Color::Rose,
+                'primary' => Color::Blue,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -45,8 +48,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+                // AccountWidget::class,
+                // FilamentInfoWidget::class,
+                \App\Filament\Widgets\StatsOverview::class,
+                \App\Filament\Widgets\SuratSakitChart::class,
+                \App\Filament\Widgets\SuratSakitPerDepartemenChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
