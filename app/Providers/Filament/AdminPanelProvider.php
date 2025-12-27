@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandLogo(asset('images/logo-klinik.png'))
-            ->brandLogoHeight('60px')
+            ->brandLogoHeight('40px')
             ->brandName('Klinik PPA')
             ->login()
             ->spa()
